@@ -6,6 +6,11 @@ following commands in the database:
 ```sql
 CREATE USER plantdb PASSWORD 'plantdb';
 CREATE DATABASE plantdb;
+GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO plantdb;
+GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO plantdb;
+GRANT ALL PRIVILEGES ON DATABASE plantdb TO plantdb;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON TABLES TO plantdb;
+ALTER DEFAULT PRIVILEGES IN SCHEMA public GRANT ALL PRIVILEGES ON SEQUENCES TO plantdb;
 ```
 
 To set up the API project, run the following commands in this folder:
