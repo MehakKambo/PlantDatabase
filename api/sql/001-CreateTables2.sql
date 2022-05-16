@@ -46,3 +46,44 @@ CREATE TABLE IF NOT EXISTS IllnessSymptom (
     FOREIGN KEY (symptom_id)   REFERENCES Symptom(id) DEFERRABLE INITIALLY DEFERRED,
     FOREIGN KEY (condition_id) REFERENCES PlantIllness(id) DEFERRABLE INITIALLY DEFERRED
 );
+
+CREATE TABLE IF NOT EXISTS Research (
+    id          SERIAL       NOT NULL,
+    citation    VARCHAR(100) NOT NULL,
+
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS Region (
+    abbr    VARCHAR(10)  NOT NULL,
+    name    VARCHAR(100) UNIQUE NOT NULL,
+
+    PRIMARY KEY (abbr)
+);
+
+CREATE TABLE IF NOT EXISTS Climate (
+    id      SERIAL      NOT NULL,
+    name    VARCHAR(20) NOT NULL,
+
+    PRIMARY KEY (id)
+);
+
+CREATE TABLE IF NOT EXISTS Plant (
+    id                  SERIAL      NOT NULL,
+    scientific_name     VARCHAR(30) UNIQUE NOT NULL,
+    common_name         VARCHAR(30) NOT NULL,
+    region              VARCHAR(10) NOT NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (region) REFERENCES Region(abbr) DEFERRABLE INITIALLY DEFERRED
+);
+
+CREATE TABLE IF NOT EXISTS PlantClimate (
+    id          SERIAL NOT NULL,
+    climate_id  INTEGER NOT NULL,
+    plant_id    INTEGER NOT NULL,
+
+    PRIMARY KEY (id),
+    FOREIGN KEY (climate_id) REFERENCES Climate(id) DEFERRABLE INITIALLY DEFERRED,
+    FOREIGN KEY (plant_id)   REFERENCES Plant(id)   DEFERRABLE INITIALLY DEFERRED
+);
