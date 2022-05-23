@@ -1,9 +1,13 @@
+import { Route, Routes } from 'react-router-dom';
+import ReactDOM from 'react-dom/client';
 import './App.css';
+import FrontPage from './pages/FrontPage';
+
 
 function App() {
   return (
-    <div className="App">
-      <h1> Hello World </h1>
+    <div>
+      <FrontPage />
     </div>
   );
 }
