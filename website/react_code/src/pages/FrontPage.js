@@ -1,9 +1,10 @@
 function FrontPage() {
-    <div>
-        <h1>
-            
-        </h1>
-    </div>
+    return (
+        <div>
+            // Search bar for front page 
+            <input placeholder="Search" />
+        </div>
+    );
 }
 
 
