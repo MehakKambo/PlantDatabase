@@ -8,7 +8,7 @@ CREATE TABLE IF NOT EXISTS Symptom (
 
 CREATE TABLE IF NOT EXISTS HandlingProtocol (
     id              SERIAL        NOT NULL,
-    protocolNumber SERIAL        UNIQUE NOT NULL,
+    protocolNumber  VARCHAR(50)   UNIQUE NOT NULL,
     info            VARCHAR(1000) NOT NULL,
 
     PRIMARY KEY (id)
@@ -67,11 +67,11 @@ CREATE TABLE IF NOT EXISTS PlantResearch (
 
 CREATE TABLE IF NOT EXISTS PlantIllness (
     id             SERIAL       NOT NULL,
-    illnessNumber SERIAL       UNIQUE NOT NULL,
+    illnessNumber  VARCHAR(50)  UNIQUE NOT NULL,
     name           VARCHAR(30)  NOT NULL,
     description    VARCHAR(500) NOT NULL,
-    plantID       INTEGER,
-    protocolID    INTEGER,
+    plantID        INTEGER,
+    protocolID     INTEGER,
 
     PRIMARY KEY (id),
     FOREIGN KEY (plant_id)    REFERENCES Plant(id) DEFERRABLE INITIALLY DEFERRED,
@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS PlantIllness (
 );
 
 CREATE TABLE IF NOT EXISTS IllnessSymptom (
-    id           SERIAL  NOT NULL,
+    id          SERIAL  NOT NULL,
     symptomID   INTEGER NOT NULL,
     conditionID INTEGER NOT NULL,
 
