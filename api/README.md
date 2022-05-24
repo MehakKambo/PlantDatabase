@@ -21,4 +21,5 @@ python -m venv venv
 pip install -r requirements.txt
 ```
 
-Then use `flask run` to run the application.
+Then use `flask run` to run the application. The API will be accessible on your local computer on `http://localhost:5000`.
+Ensure that the database is running locally on port 5432 before making requests to the API.
