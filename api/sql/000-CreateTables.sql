@@ -1,7 +1,8 @@
 CREATE TABLE IF NOT EXISTS Symptom (
-    id          SERIAL       NOT NULL,
-    name        VARCHAR(30)  UNIQUE NOT NULL,
-    description VARCHAR(500) NOT NULL,
+    id             SERIAL       NOT NULL,
+    symptomNumber  VARCHAR(50)  UNIQUE NOT NULL,
+    name           VARCHAR(30)  UNIQUE NOT NULL,
+    description    VARCHAR(500) NOT NULL,
 
     PRIMARY KEY (id)
 );
