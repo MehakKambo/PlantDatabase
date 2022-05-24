@@ -1,11 +1,11 @@
 import './App.css';
-import FrontPage from './pages/FrontPage';
+import PlantPage from './pages/PlantPage';
 
 
 function App() {
   return (
     <div>
-      <FrontPage />
+      <PlantPage />
     </div>
   );
 }
