@@ -39,14 +39,14 @@ def plants():
             response_keys = ['scientificName', 'commonName', 'region']
             query_region = request.args.get('region', default='', type=str)
             if query_region != '':
-                cursor.execute('SELECT Plant.scientificName AS scientificName, Plant.commonName AS commonName, Region.name '
+                cursor.execute('SELECT Plant.scientificName, Plant.commonName, Region.name '
                                'FROM Plant '
                                'LEFT JOIN Region '
                                '    ON Plant.region = Region.abbr '
                                'WHERE Plant.region = %s'
                                'ORDER BY Plant.scientificName;', (query_region,))
             else:
-                cursor.execute('SELECT Plant.scientificName AS scientificName, Plant.commonName AS commonName, Region.name '
+                cursor.execute('SELECT Plant.scientificName, Plant.commonName, Region.name '
                                'FROM Plant '
                                'LEFT JOIN Region '
                                '    ON Plant.region = Region.abbr '
@@ -69,9 +69,9 @@ def plant_info(scientific_name_raw: str):
     with conn:
         with conn.cursor() as cursor:
             # Get the plant itself
-            response_keys_basic = ['id', 'scientificName', 'commonName', 'region_name', 'region_abbr']
-            cursor.execute('SELECT Plant.id, Plant.scientificName AS scientificName, Plant.commonName AS commonName, '
-                           '    Region.name AS region_name, Region.abbr AS region_abbr '
+            response_keys_basic = ['id', 'scientificName', 'commonName', 'regionName', 'regionAbbr']
+            cursor.execute('SELECT Plant.id, Plant.scientificName, Plant.commonName, '
+                           '    Region.name AS regionName, Region.abbr AS regionAbbr '
                            'FROM Plant '
                            'LEFT JOIN Region '
                            '    ON Plant.region = Region.abbr '
@@ -115,7 +115,7 @@ def plant_conditions(scientific_name_raw: str):
     with conn:
         with conn.cursor() as cursor:
             response_keys = ['illnessNumber', 'name', 'description']
-            cursor.execute('SELECT illnessNumber AS illnessNumber, name, description '
+            cursor.execute('SELECT illnessNumber, name, description '
                            'FROM PlantIllness '
                            'WHERE plantID = '
                            '    (SELECT id FROM Plant WHERE scientificName = %s);', (scientific_name,))
@@ -180,7 +180,7 @@ def plant_illness_symptoms(plantIllness_name_raw: str):
             # Get all the symptoms related to the illness
             symp_response_keys = ['name', 'description']
             cursor.execute('SELECT Symp.name, Symp.description'
-                            'FROM Symptpm Symp'
+                            'FROM Symptom Symp'
                             'JOIN IllnessSymptom IS'
 	                        '   ON IS.SymptomID = Symp.ID'
                             'WHERE IS.conditionID = %d;', (conditionID,)) 
@@ -191,7 +191,7 @@ def plant_illness_symptoms(plantIllness_name_raw: str):
         'symptoms': symptoms
     }
 
-@app.route('/plants/<scientific_name_raw>,<common_name_raw>, <region_raw>/main', methods=['PUT'])
+@app.route('/plants/<scientific_name_raw>,<common_name_raw>,<region_raw>/main', methods=['PUT'])
 def update_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: str):
     """
     Endpoint for interaction #7
@@ -213,14 +213,13 @@ def update_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw
             except (Exception, psycopg2.DatabaseError) as error:
                 return {
                     'message': error
-                }
+                }, 500
     conn.close()
     return {
-        'status': '200',
         'ok': 'true'
     }
 
-@app.route('/plants/<scientific_name_raw>,<common_name_raw>, <region_raw>', methods=['POST'])
+@app.route('/plants/<scientific_name_raw>,<common_name_raw>,<region_raw>', methods=['POST'])
 def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: str):
     """
     Endpoint for interaction #8
@@ -241,12 +240,11 @@ def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: s
             except (Exception, psycopg2.DatabaseError) as error:
                 return {
                     'message': error
-                }
+                }, 500
     conn.close()
     return {
-        'status': '201',
         'ok': 'true'
-    }
+    }, 201
 
 @app.route('/plants/<symptom_name_raw>/plantIllness', methods=['GET'])
 def plant_illness(symptom_name_raw: str):
@@ -259,7 +257,7 @@ def plant_illness(symptom_name_raw: str):
     with conn:
         with conn.cursor() as cursor:
             response_keys = ['illnessNumber', 'name', 'description']
-            cursor.execute('SELECT illnessNumber AS illnessNumber, name, description '
+            cursor.execute('SELECT illnessNumber, name, description '
                            'FROM PlantIllness '
                            'JOIN IllnessSympton IS ' 
 	                        '   ON PI.ID = IS.conditionID '
