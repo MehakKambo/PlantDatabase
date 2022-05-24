@@ -125,32 +125,31 @@ def plant_conditions(scientific_name_raw: str):
         'conditions': conditions
     }
 
-@app.route('/plants/<symptom_name_raw>/plantIllness', methods=['GET'])
-def plant_illness(symptom_name_raw: str):
+@app.route('/plants/<scientific_name_raw>/symptoms', methods=['GET'])
+def plant_symptoms(scientific_name_raw: str):
     """
     Endpoint for interaction #5:
-    Returns all the PlantIllnesses related to the provided symptom name as an array.
+    Returns all symptoms for the plant with the provided scientific name as an array.
     """
-    symptom_name = escape(symptom_name_raw)
+    scientific_name = escape(scientific_name_raw)
     conn = psycopg2.connect(app.config['CONNECTION_STRING'])
     with conn:
         with conn.cursor() as cursor:
-            response_keys = ['illnessNumber', 'name', 'description']
-            cursor.execute('SELECT illnessNumber AS illnessNumber, name, description '
-                           'FROM PlantIllness '
-                           'JOIN IllnessSympton IS ' 
-	                        '   ON PI.ID = IS.conditionID '
-                            'JOIN Symptom Symp '
-	                        '   ON Symp.ID = IS.SymptomID '
-                            'WHERE Symp.name = %s);', (symptom_name,))
-            plantIllnesses = [dict(zip(response_keys, plantIllness)) for plantIllness in cursor.fetchall()]
+            response_keys = ['symptomNumber', 'name', 'description']
+            cursor.execute('SELECT symptomNumber, name, description '
+                           'FROM PlantSymptom '
+                           'JOIN Symptom '
+                           '    ON PlantSymptom.symptomId = Symptom.id '
+                           'WHERE plantID = '
+                           '    (SELECT id FROM Plant WHERE scientificName = %s);', (scientific_name,))
+            symptoms = [dict(zip(response_keys, condition)) for condition in cursor.fetchall()]
     conn.close()
     return {
-        'plantIllnesses': plantIllnesses 
+        'symptoms': symptoms
     }
 
 @app.route('/plants/<plantIllness_name_raw>/symptoms', methods=['GET'])
-def plant_symptoms(plantIllness_name_raw: str):
+def plant_illness_symptoms(plantIllness_name_raw: str):
     """
     Endpoint for interaction #6:
     Returns all the symptoms and handling protocols for the given plant illness
@@ -247,4 +246,28 @@ def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: s
     return {
         'status': '201',
         'ok': 'true'
+    }
+
+@app.route('/plants/<symptom_name_raw>/plantIllness', methods=['GET'])
+def plant_illness(symptom_name_raw: str):
+    """
+    Endpoint for interaction #9:
+    Returns all the PlantIllnesses related to the provided symptom name as an array.
+    """
+    symptom_name = escape(symptom_name_raw)
+    conn = psycopg2.connect(app.config['CONNECTION_STRING'])
+    with conn:
+        with conn.cursor() as cursor:
+            response_keys = ['illnessNumber', 'name', 'description']
+            cursor.execute('SELECT illnessNumber AS illnessNumber, name, description '
+                           'FROM PlantIllness '
+                           'JOIN IllnessSympton IS ' 
+	                        '   ON PI.ID = IS.conditionID '
+                            'JOIN Symptom Symp '
+	                        '   ON Symp.ID = IS.SymptomID '
+                            'WHERE Symp.name = %s);', (symptom_name,))
+            plantIllnesses = [dict(zip(response_keys, plantIllness)) for plantIllness in cursor.fetchall()]
+    conn.close()
+    return {
+        'plantIllnesses': plantIllnesses 
     }
