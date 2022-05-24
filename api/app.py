@@ -191,6 +191,8 @@ def plant_symptoms(plantIllness_name_raw: str):
 	                        '   ON PI.ID = IS.ConditionID'
                             'WHERE PI.name = %s);', (plantIllness_name,))
             handProtocol_row = cursor.fetchone()
+            if handProtocol_row is None:
+                abort(404)
             handProtocol = dict(zip(hp_response_keys, handProtocol_row))
 
             # Use the conditionID to get all the symptoms and remove 
@@ -204,7 +206,7 @@ def plant_symptoms(plantIllness_name_raw: str):
                             'FROM Symptpm Symp'
                             'JOIN IllnessSymptom IS'
 	                        '   ON IS.SymptomID = Symp.ID'
-                            'WHERE IS.conditionID = %d;' (conditionID,)) 
+                            'WHERE IS.conditionID = %d;', (conditionID,)) 
             symptoms = [dict(zip(symp_response_keys, symptom)) for symptom in cursor.fetchall()]
     conn.close()
     return {
@@ -229,7 +231,7 @@ def update_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw
             try:
                 cursor.execute('UPDATE Plant'
                                 'SET (commonName = %s), (region = %s)'
-                                'WHERE scientificName = %s;' 
+                                'WHERE scientificName = %s;',
                                 (common_name, region, scientific_name))
             except (Exception, psycopg2.DatabaseError) as error:
                 return {
@@ -257,7 +259,7 @@ def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: s
         with conn.cursor() as cursor:
             try:
                 cursor.execute('INSERT INTO PLANT (scientificName, commonName, region)'
-                                'VALUE (%s, %s, %s);' 
+                                'VALUE (%s, %s, %s);',
                                 (scientific_name, common_name, region))
             except (Exception, psycopg2.DatabaseError) as error:
                 return {
