@@ -161,20 +161,20 @@ def plant_illness_symptoms(plantIllness_name_raw: str):
 
             # HandlingProtocol (hp) response keys
             # each plant illness has no more than one hp
-            hp_response_keys = ['protocolNumber', 'info', 'conditionID']
-            cursor.execute('SELECT HP.protocolNumber, HP.info, PI.ID as conditionID'
+            hp_response_keys = ['protocolNumber', 'info', 'illnessID']
+            cursor.execute('SELECT HP.protocolNumber, HP.info, PI.ID as illnessID'
                             'FROM HandlingProtocol HP'
                             'JOIN PlantIllness PI'
-	                        '   ON PI.ID = IS.ConditionID'
+	                        '   ON PI.ID = IS.illnessID'
                             'WHERE PI.name = %s);', (plantIllness_name,))
             handProtocol_row = cursor.fetchone()
             if handProtocol_row is None:
                 abort(404)
             handProtocol = dict(zip(hp_response_keys, handProtocol_row))
 
-            # Use the conditionID to get all the symptoms and remove 
+            # Use the illnessID to get all the symptoms and remove 
             # it from the dict so the user doesn't get it
-            conditionID = int(handProtocol.pop('conditionID'))
+            illnessID = int(handProtocol.pop('illnessID'))
 
             # Each plant illness has one to many symptoms
             # Get all the symptoms related to the illness
@@ -183,7 +183,7 @@ def plant_illness_symptoms(plantIllness_name_raw: str):
                             'FROM Symptom Symp'
                             'JOIN IllnessSymptom IS'
 	                        '   ON IS.SymptomID = Symp.ID'
-                            'WHERE IS.conditionID = %d;', (conditionID,)) 
+                            'WHERE IS.illnessID = %d;', (illnessID,)) 
             symptoms = [dict(zip(symp_response_keys, symptom)) for symptom in cursor.fetchall()]
     conn.close()
     return {
@@ -260,7 +260,7 @@ def plant_illness(symptom_name_raw: str):
             cursor.execute('SELECT illnessNumber, name, description '
                            'FROM PlantIllness '
                            'JOIN IllnessSympton IS ' 
-	                        '   ON PI.ID = IS.conditionID '
+	                        '   ON PI.ID = IS.illnessID '
                             'JOIN Symptom Symp '
 	                        '   ON Symp.ID = IS.SymptomID '
                             'WHERE Symp.name = %s);', (symptom_name,))
