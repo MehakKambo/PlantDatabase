@@ -1,15 +1,15 @@
 import { useState } from 'react';
-import ConditionsTab from '../components/ConditionsTab/ConditionsTab';
+import IllnessesTab from '../components/IllnessesTab/IllnessesTab';
 import PlantTab from '../components/PlantTab/PlantTab';
 import SymptomsTab from '../components/SymptomsTab/SymptomsTab'
 
 const mainInfoTab = 'Main info';
-const conditionsTab = 'Conditions';
+const illnessesTab = 'Illnesses';
 const symptomsTab = 'Symptoms';
 
 const tabs = new Map([
     [mainInfoTab, <PlantTab />],
-    [conditionsTab, <ConditionsTab />],
+    [illnessesTab, <IllnessesTab />],
     [symptomsTab, <SymptomsTab />],
 ]);
 
@@ -28,7 +28,7 @@ export default function PlantPage() {
         <div>
             <div className='plant-page__navbar'>
                 <input type='button' value={mainInfoTab} onClick={onTabClicked} />
-                <input type='button' value={conditionsTab} onClick={onTabClicked} />
+                <input type='button' value={illnessesTab} onClick={onTabClicked} />
                 <input type='button' value={symptomsTab} onClick={onTabClicked} />
             </div>
             <br />

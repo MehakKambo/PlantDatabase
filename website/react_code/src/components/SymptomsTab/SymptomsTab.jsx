@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 
-function SymptomConditions({ symptomNumber }) {
-    const [conditions, setConditions] = useState(null);
+function SymptomIllnesses({ symptomNumber }) {
+    const [illnesses, setIllnesses] = useState(null);
     
     useEffect(() => {
         // https://plants.ces.ncsu.edu/plants/camellia-sinensis/
         // This will eventually do an actual request to the API
         new Promise((resolve) => setTimeout(resolve, 600))
             .then(() => {
-                setConditions([
+                setIllnesses([
                     {
                         illnessNumber: 'e3e9e238-d026-4e2a-8d1c-8b2330929f69',
                         name: 'Dieback',
@@ -28,13 +28,13 @@ function SymptomConditions({ symptomNumber }) {
             });
     }, []);
 
-    if (conditions == null) {
+    if (illnesses == null) {
         return <div>Loading...</div>
     }
 
     return (
         <ul>
-            {conditions.map(cond => <li key={symptomNumber + cond.illnessNumber}><a href={`/conditions/${cond.illnessNumber}`}>{cond.name}</a></li>)}
+            {illnesses.map(ill => <li key={symptomNumber + ill.illnessNumber}><a href={`/conditions/${ill.illnessNumber}`}>{ill.name}</a></li>)}
         </ul>
     );
 }
@@ -82,7 +82,7 @@ export default function SymptomsTab() {
                     <tr>
                         <th>Symptom</th>
                         <th>Description</th>
-                        <th>Possible conditions (click symptom)</th>
+                        <th>Possible illnesses (click symptom)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -90,7 +90,7 @@ export default function SymptomsTab() {
                         <tr key={`symptom-${sym.symptomNumber}`}>
                             <td><button value={sym.symptomNumber} onClick={onSymptomClicked}>{sym.name}</button></td>
                             <td>{sym.description}</td>
-                            <td>{selectedSymptom === sym.symptomNumber ? <SymptomConditions symptomNumber={sym.symptomNumber} /> : <div />}</td>
+                            <td>{selectedSymptom === sym.symptomNumber ? <SymptomIllnesses symptomNumber={sym.symptomNumber} /> : <div />}</td>
                         </tr>
                     ))}
                 </tbody>

@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react';
 
-export default function ConditionsTab() {
-    const [conditions, setConditions] = useState(null);
+export default function IllnessesTab() {
+    const [illnesses, setIllnesses] = useState(null);
     
     useEffect(() => {
         // https://plants.ces.ncsu.edu/plants/camellia-sinensis/
         // This will eventually do an actual request to the API
         new Promise((resolve) => setTimeout(resolve, 600))
             .then(() => {
-                setConditions([
+                setIllnesses([
                     {
                         illnessNumber: 'e3e9e238-d026-4e2a-8d1c-8b2330929f69',
                         name: 'Dieback',
@@ -28,7 +28,7 @@ export default function ConditionsTab() {
             });
     }, []);
 
-    if (conditions == null) {
+    if (illnesses == null) {
         return <div>Loading...</div>
     }
 
@@ -42,8 +42,8 @@ export default function ConditionsTab() {
                     </tr>
                 </thead>
                 <tbody>
-                    {conditions.map(cond => (
-                        <tr key={`condition-${cond.illnessNumber}`}>
+                    {illnesses.map(cond => (
+                        <tr key={`illness-${cond.illnessNumber}`}>
                             <td><a href={`/condition/${cond.illnessNumber}`}>{cond.name}</a></td>
                             <td>{cond.description}</td>
                         </tr>
