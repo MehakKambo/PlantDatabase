@@ -82,7 +82,7 @@ CREATE TABLE IF NOT EXISTS PlantIllness (
 CREATE TABLE IF NOT EXISTS IllnessSymptom (
     id          SERIAL  NOT NULL,
     symptomID   INTEGER NOT NULL,
-    conditionID INTEGER NOT NULL,
+    IllnessID INTEGER NOT NULL,
 
     PRIMARY KEY (id),
     FOREIGN KEY (symptom_id)   REFERENCES Symptom(id) DEFERRABLE INITIALLY DEFERRED,
