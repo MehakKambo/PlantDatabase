@@ -4,7 +4,7 @@ import psycopg2
 
 
 app = Flask(__name__)
-app.config['CONNECTION_STRING'] = 'dbname=plantdb user=plantdb password=plantdb'
+app.config['CONNECTION_STRING'] = 'host=plantdb.postgres.database.azure.com port=5432 dbname=plantdb user=plantdb password=CSS475final sslmode=require'
 
 @app.route('/regions', methods=['GET'])
 def regions():
