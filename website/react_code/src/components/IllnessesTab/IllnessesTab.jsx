@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 
 export default function IllnessesTab() {
     const [illnesses, setIllnesses] = useState(null);
@@ -42,10 +43,10 @@ export default function IllnessesTab() {
                     </tr>
                 </thead>
                 <tbody>
-                    {illnesses.map(cond => (
-                        <tr key={`illness-${cond.illnessNumber}`}>
-                            <td><a href={`/condition/${cond.illnessNumber}`}>{cond.name}</a></td>
-                            <td>{cond.description}</td>
+                    {illnesses.map(ill => (
+                        <tr key={`illness-${ill.illnessNumber}`}>
+                            <td><Link to={`/condition/${ill.illnessNumber}`}>{ill.name}</Link></td>
+                            <td>{ill.description}</td>
                         </tr>
                     ))}
                 </tbody>
