@@ -1,13 +1,12 @@
+import { Outlet } from 'react-router-dom';
 import './App.css';
-import PlantPage from './pages/PlantPage';
-
 
 function App() {
-  return (
-    <div>
-      <PlantPage />
-    </div>
-  );
+    return (
+        <div>
+            <Outlet />
+        </div>
+    );
 }
 
 export default App;
