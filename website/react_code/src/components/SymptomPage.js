@@ -39,7 +39,7 @@ function SymptomIllnesses({ symptomNumber }) {
     );
 }
 
-export default function SymptomsTab() {
+export default function SymptomPage() {
     const [symptoms, setSymptoms] = useState(null);
     const [selectedSymptom, setSelectedSymptom] = useState('');
 
