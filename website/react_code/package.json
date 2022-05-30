@@ -1,5 +1,6 @@
 {
   "name": "plant-database",
+  "homepage": "https://mehakkambo.github.io/PlantDatabase/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
