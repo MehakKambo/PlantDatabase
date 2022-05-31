@@ -155,13 +155,14 @@ def plant_symptoms(scientific_name_raw: str, illness_name_raw: str):
         'symptoms': symptoms
     }
 
-@app.route('/plants/<plantIllness_name_raw>/handlingProtocol', methods=['GET'])
-def plant_illness_symptoms(plantIllness_name_raw: str):
+@app.route('/plants/<scientific_name_raw>/illness/<illness_name_raw>/handlingprotocol', methods=['GET'])
+def plant_illness_symptoms(scientific_name_raw: str, illness_name_raw: str):
     """
     Endpoint for interaction #6:
     Returns handling protocol for the given plant illness
     """
-    plantIllness_name = escape(plantIllness_name_raw)
+    scientific_name = escape(scientific_name_raw)
+    plantIllness_name = escape(illness_name_raw)
     conn = psycopg2.connect(app.config['CONNECTION_STRING'])
     with conn:
         with conn.cursor() as cursor:
@@ -173,7 +174,10 @@ def plant_illness_symptoms(plantIllness_name_raw: str):
                             'FROM HandlingProtocol HP '
                             'JOIN PlantIllness PI '
 	                        '   ON PI.ID = HP.ID '
-                            'WHERE PI.name = %s;', (plantIllness_name,))
+                            'JOIN Plant P '
+                            '   ON P.ID = PI.PlantID '
+                            'WHERE PI.name = %s AND P.scientificName = %s;', 
+                            (plantIllness_name, scientific_name))
             handProtocol_row = cursor.fetchone()
             if handProtocol_row is None:
                 abort(404)
