@@ -4,7 +4,7 @@ import Modal from "./Modal";
 
 
 function Home() {
-  const [modalButton, setModalPopup] = useState(false);
+  const [modalButton, setShowModal] = useState(false);
 
 
   return (
@@ -20,8 +20,8 @@ function Home() {
         </tr>
         <tr>
           <td>
-            <Modal trigger={modalButton} setTrigger={setModalPopup}></Modal>
-            <button onClick={() => setModalPopup(true)}>China Pink</button>
+            <Modal trigger={modalButton} setTrigger={setShowModal}></Modal>
+            <button onClick={() => setShowModal(true)}>China Pink</button>
           </td>
         </tr>
       </table>
