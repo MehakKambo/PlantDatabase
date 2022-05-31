@@ -127,14 +127,16 @@ def plant_illnesses(scientific_name_raw: str):
         'illnesses': illnesses
     }
 
-@app.route('/plants/<illness_name_raw>/symptoms', methods=['GET'])
-def plant_symptoms(illness_name_raw: str):
+@app.route('/plants/<scientific_name_raw>/illness/<illness_name_raw>/symptoms', methods=['GET'])
+def plant_symptoms(scientific_name_raw: str, illness_name_raw: str):
     """
     Endpoint for interaction #5:
-    Returns all symptoms for the plant illlness with the provided plantIllness
+    Returns all symptoms for the plant with the provided plantIllness
     name as an array.
     """
     illness_name = escape(illness_name_raw)
+    scientific_name = escape(scientific_name_raw)
+
     conn = psycopg2.connect(app.config['CONNECTION_STRING'])
     with conn:
         with conn.cursor() as cursor:
@@ -145,7 +147,10 @@ def plant_symptoms(illness_name_raw: str):
 		                    '    ON (S.ID = ISymp.SymptomID) '
                             'JOIN PlantIllness PI ' 
                             '    ON (ISymp.IllnessID = PI.ID) '
-                           'WHERE PI.name = %s;', (illness_name,))
+                            'JOIN Plant P ' 
+	                        '    ON (P.ID = PI.plantID) '
+                           'WHERE PI.name = %s AND P.scientificName = %s;', 
+                           (illness_name, scientific_name))
             symptoms = [dict(zip(response_keys, condition)) for condition in cursor.fetchall()]
     conn.close()
     return {
@@ -181,8 +186,8 @@ def plant_illness_symptoms(plantIllness_name_raw: str):
         'handlingProtocol': handProtocol
     }
 
-@app.route('/plants/<scientific_name_raw>,<common_name_raw>/main', methods=['PUT'])
-def update_plant_info(scientific_name_raw: str, common_name_raw: str):
+@app.route('/plants/<scientific_name_raw>,<common_name_raw>,<region_name_raw>/main', methods=['PUT'])
+def update_plant_info(scientific_name_raw: str, common_name_raw: str, region_name_raw: str):
     """
     Endpoint for interaction #7
     Returns status code 200 if update was successful
@@ -190,15 +195,47 @@ def update_plant_info(scientific_name_raw: str, common_name_raw: str):
     """
     scientific_name = escape(scientific_name_raw)
     common_name = escape(common_name_raw)
+    region_name = escape(region_name_raw)
 
     conn = psycopg2.connect(app.config['CONNECTION_STRING'])
     with conn:
         with conn.cursor() as cursor:
+
+            # Check if region already exists
+            #  otherwise insert a new region first
+            helper_keys = ['abbr', 'name']
+            cursor.execute('SELECT * ' 
+                            'FROM Region R '
+                            'WHERE R.name = %s;', (region_name,))
+            region_row = cursor.fetchone()
+            
+            # Add new region specified by the user
+            if region_row is None:
+                if len(region_name) < 5:
+                    return {
+                        'error': 404,
+                        'message': 'Invalid region name'
+                    }
+                
+                region_abbr = region_name[0:3]
+                try:
+                    cursor.execute('INSERT INTO Region (abbr, name) '
+                                    'VALUES (%s, %s);', (region_abbr, region_name))
+                except (Exception, psycopg2.DatabaseError) as error:
+                    return {
+                        'message': error
+                    }
+            else:
+                region_info = dict(zip(helper_keys, region_row))
+                # Get the abbr to insert new plant record
+                region_abbr = str(region_info.pop('abbr'))
+
+
             try:
                 cursor.execute('UPDATE Plant '
-                                'SET commonName = %s '
+                                'SET commonName = %s, region = %s '
                                 'WHERE scientificName = %s;',
-                                (common_name, scientific_name))
+                                (common_name, region_abbr, scientific_name))
             except (Exception, psycopg2.DatabaseError) as error:
                 return {
                     'message': error
@@ -244,7 +281,6 @@ def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: s
                             'FROM Region R '
                             'WHERE R.name = %s;', (region_name,))
             region_row = cursor.fetchone()
-            region_info = dict(zip(helper_keys, region_row))
 
             # Add new region specified by the user
             if region_row is None:
@@ -255,6 +291,7 @@ def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: s
                     }
                 
                 region_abbr = region_name[0:3]
+                
                 try:
                     cursor.execute('INSERT INTO Region (abbr, name) '
                                     'VALUES (%s, %s);', (region_abbr, region_name))
@@ -264,11 +301,12 @@ def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: s
                     }
             else:
                 # Get the abbr to insert new plant record
+                region_info = dict(zip(helper_keys, region_row))
                 region_abbr = str(region_info.pop('abbr'))
 
             # Insert new plant record
             try:
-                cursor.execute('INSERT INTO PLANT (scientificName, commonName, region)'
+                cursor.execute('INSERT INTO PLANT (scientificName, commonName, region) '
                             'VALUES (%s, %s, %s);',
                             (scientific_name, common_name, region_abbr))
             except (Exception, psycopg2.DatabaseError) as error:
@@ -282,7 +320,7 @@ def add_plant_info(scientific_name_raw: str, common_name_raw: str, region_raw: s
         'message': 'inserted successfully'
     }
 
-@app.route('/plants/<symptom_name_raw>/plantIllness', methods=['GET'])
+@app.route('/symptoms/<symptom_name_raw>/illnesses', methods=['GET'])
 def plant_illness(symptom_name_raw: str):
     """
     Endpoint for interaction #9:
@@ -292,13 +330,16 @@ def plant_illness(symptom_name_raw: str):
     conn = psycopg2.connect(app.config['CONNECTION_STRING'])
     with conn:
         with conn.cursor() as cursor:
-            response_keys = ['illnessNumber', 'name', 'description']
-            cursor.execute('SELECT PI.illnessNumber, PI.name, PI.description '
+            response_keys = ['illnessNumber', 'name', 'description', 'plantScientificName']
+            cursor.execute('SELECT PI.illnessNumber, PI.name, PI.description, '
+                            '       P.scientificName as plantScientificName '
                            'FROM PlantIllness PI '
                            'JOIN IllnessSymptom ISymp ' 
 	                        '   ON PI.ID = ISymp.illnessID '
                             'JOIN Symptom Symp '
 	                        '   ON Symp.ID = ISymp.SymptomID '
+                            'JOIN Plant P '
+                            '   ON P.ID = PI.PlantID '
                             'WHERE Symp.name = %s;', (symptom_name,))
             plantIllnesses = [dict(zip(response_keys, plantIllness)) for plantIllness in cursor.fetchall()]
     conn.close()
