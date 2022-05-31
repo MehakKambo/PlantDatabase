@@ -1,7 +1,12 @@
-import React from "react";
+import React, { useState } from "react";
 import "../styles/Home.css"
+import Modal from "./Modal";
+
 
 function Home() {
+  const [modalButton, setModalPopup] = useState(false);
+
+
   return (
     <div className="home">
       <div className="headerContainer">
@@ -11,10 +16,13 @@ function Home() {
     <div className="plantTable"> 
       <table>
         <tr>
-          <th>Common Plant Name</th>
+          <th>Plant Name</th>
         </tr>
         <tr>
-          <td>Camellia sinensis</td>
+          <td>
+            <Modal trigger={modalButton} setTrigger={setModalPopup}></Modal>
+            <button onClick={() => setModalPopup(true)}>China Pink</button>
+          </td>
         </tr>
       </table>
     </div>

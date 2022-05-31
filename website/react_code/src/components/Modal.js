@@ -1,7 +1,8 @@
-import React from 'react'
+import React from 'react';
+import "../styles/Modal.css";
 
-const Modal = props => {
-	return (
+function Modal(props) {
+	return (props.trigger) ? (
 		<div className='modal'>
 			<div className='modal-content'>
 				<div className='modal-header'>
@@ -10,11 +11,11 @@ const Modal = props => {
 				<div className='modal-body'>Modal content
 				</div>
 				<div className='modal-footer'>
-					<button className='button'>Close</button>
+					<button className='button' onClick={() => props.setTrigger(false)}>Close</button>
 				</div>
 			</div>
 		</div>
-	);
+	): "";
 }
 
 export default Modal;
