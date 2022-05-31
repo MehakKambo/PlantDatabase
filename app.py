@@ -1,5 +1,3 @@
-from ast import Not
-from urllib import response
 from flask import Flask, abort, request
 from markupsafe import escape
 import psycopg2
