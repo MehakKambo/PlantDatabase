@@ -10,7 +10,6 @@ function Navbar() {
         <img src={Logo} />
       </div>
       <div className="rightSide">
-        //Update to wrap Home Illnesses Symptoms to the page size and change the font looks ugly
         <Link to="/"> Home </Link>
         <Link to="illnesses"> Illnesses </Link>
         <Link to="symptoms"> Symptoms </Link>
