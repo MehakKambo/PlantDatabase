@@ -3,9 +3,13 @@ import "../styles/Home.css"
 import Modal from "./Modal";
 
 
-function Home() {
-  const [modalButton, setShowModal] = useState(false);
+export function Component(props) {
+  return <div> {props.data} {props.whatever} </div>
+}
 
+
+export default function Home() {
+  const [modalButton, setShowModal] = useState(false);
 
   return (
     <div className="home">
@@ -31,4 +35,5 @@ function Home() {
   );
 }
 
-export default Home;
+
+
