@@ -1,14 +1,14 @@
 {
   "files": {
-    "main.css": "/PlantDatabase/static/css/main.f4109ee3.css",
-    "main.js": "/PlantDatabase/static/js/main.ea140c5b.js",
+    "main.css": "/PlantDatabase/static/css/main.839ab7a5.css",
+    "main.js": "/PlantDatabase/static/js/main.5984f40a.js",
     "static/media/plant_logo.png": "/PlantDatabase/static/media/plant_logo.52f7158bd26e733fc0d2.png",
     "index.html": "/PlantDatabase/index.html",
-    "main.f4109ee3.css.map": "/PlantDatabase/static/css/main.f4109ee3.css.map",
-    "main.ea140c5b.js.map": "/PlantDatabase/static/js/main.ea140c5b.js.map"
+    "main.839ab7a5.css.map": "/PlantDatabase/static/css/main.839ab7a5.css.map",
+    "main.5984f40a.js.map": "/PlantDatabase/static/js/main.5984f40a.js.map"
   },
   "entrypoints": [
-    "static/css/main.f4109ee3.css",
-    "static/js/main.ea140c5b.js"
+    "static/css/main.839ab7a5.css",
+    "static/js/main.5984f40a.js"
   ]
 }
