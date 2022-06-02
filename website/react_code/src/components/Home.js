@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import "../styles/Home.css"
 import Modal from "./Modal";
+import ApiFetchData from "./ApiFetchData";
 
 
 export function Component(props) {
@@ -15,6 +16,7 @@ export default function Home() {
     <div className="home">
       <div className="headerContainer">
         <h1> Plant Database </h1>
+        <ApiFetchData />
       </div>
 
     <div className="plantTable"> 
