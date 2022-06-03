@@ -11,7 +11,7 @@ export default class ApiFetchData extends React.Component {
         const url = "https://plantdb.azurewebsites.net/plants";
         const response = await fetch(url);
         const data = await response.json();
-        console.log(data);
+        console.log(data.plants[1].commonName);
     }
 
     render() {

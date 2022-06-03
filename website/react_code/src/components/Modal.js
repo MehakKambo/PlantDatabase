@@ -6,9 +6,9 @@ function Modal(props) {
 		<div className='modal'>
 			<div className='modal-content'>
 				<div className='modal-header'>
-					<h4 className='modal-title'>Modal Title</h4>
+					<h4 className='modal-title'>{props.commonName}</h4>
 				</div>
-				<div className='modal-body'>Modal content
+				<div className='modal-body'>{props.description}
 				</div>
 				<div className='modal-footer'>
 					<button className='button' onClick={() => props.setTrigger(false)}>Close</button>

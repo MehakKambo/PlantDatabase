@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "../styles/Home.css"
 import Modal from "./Modal";
 import ApiFetchData from "./ApiFetchData";
@@ -6,6 +6,24 @@ import ApiFetchData from "./ApiFetchData";
 
 export function Component(props) {
   return <div> {props.data} {props.whatever} </div>
+}
+
+export function PlantData(){
+  const [plantInfo, setPlantInfo] = useState(null);
+
+  useEffect(() => {
+    new fetch('https://plantdb.azurewebsites.net/plants')
+      .then(res => res.json())
+      .then(data => {
+        setPlantInfo([{
+          commonName: data.plants.commonName,
+          region: data.plants.region,
+          scientificname: data.plants.scientificname
+        }])
+      })
+  })
+
+
 }
 
 
