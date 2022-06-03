@@ -8,27 +8,19 @@ export function Component(props) {
   return <div> {props.data} {props.whatever} </div>
 }
 
-export function PlantData(){
-  const [plantInfo, setPlantInfo] = useState(null);
-
-  useEffect(() => {
-    new fetch('https://plantdb.azurewebsites.net/plants')
-      .then(res => res.json())
-      .then(data => {
-        setPlantInfo([{
-          commonName: data.plants.commonName,
-          region: data.plants.region,
-          scientificname: data.plants.scientificname
-        }])
-      })
-  })
-
-
-}
-
-
 export default function Home() {
   const [modalButton, setShowModal] = useState(false);
+  const [modalPlant, setModelPlant] = useState(null);
+
+  const [plantInfo, setPlantInfo] = useState([]);
+
+  useEffect(() => {
+    fetch('https://plantdb.azurewebsites.net/plants')
+      .then(res => res.json())
+      .then(data => {
+        setPlantInfo(data.plants)
+      })
+  }, [])
 
   return (
     <div className="home">
@@ -37,17 +29,26 @@ export default function Home() {
         <ApiFetchData />
       </div>
 
+    <Modal trigger={modalButton} setTrigger={setShowModal} scientificName={modalPlant}></Modal>
     <div className="plantTable"> 
       <table>
-        <tr>
-          <th>Plant Name</th>
-        </tr>
-        <tr>
-          <td>
-            <Modal trigger={modalButton} setTrigger={setShowModal}></Modal>
-            <button onClick={() => setShowModal(true)}>China Pink</button>
-          </td>
-        </tr>
+        <thead>
+          <tr>
+            <th>Plant Name</th>
+          </tr>
+        </thead>
+        <tbody>
+          {plantInfo.map(pi => (
+            <tr key={pi.scientificName}>
+              <td>
+                <button onClick={() => {
+                  setModelPlant(pi.scientificName);
+                  setShowModal(true);
+                }}>{pi.commonName}</button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
       </table>
     </div>
 
