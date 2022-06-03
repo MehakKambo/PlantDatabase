@@ -13,6 +13,7 @@
 .modal-content {
     width: 500px;
     background-color: #fff;
+    text-align: center;
 }
 
 .model-header, .modal-footer {
@@ -21,6 +22,7 @@
 
 .modal-title {
     margin: 0;
+    text-align: center;
 }
 
 .modal-body {

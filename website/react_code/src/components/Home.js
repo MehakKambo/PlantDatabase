@@ -26,7 +26,6 @@ export default function Home() {
     <div className="home">
       <div className="headerContainer">
         <h1> Plant Database </h1>
-        <ApiFetchData />
       </div>
 
     <Modal trigger={modalButton} setTrigger={setShowModal} scientificName={modalPlant}></Modal>
@@ -35,6 +34,7 @@ export default function Home() {
         <thead>
           <tr>
             <th>Plant Name</th>
+            <th>Region</th>
           </tr>
         </thead>
         <tbody>
@@ -45,6 +45,9 @@ export default function Home() {
                   setModelPlant(pi.scientificName);
                   setShowModal(true);
                 }}>{pi.commonName}</button>
+              </td>
+              <td>
+                {pi.region}
               </td>
             </tr>
           ))}
