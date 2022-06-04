@@ -9,7 +9,7 @@ export default function IllnessesPage() {
 		
 
     useEffect(() => {
-      fetch(`https://plantdb.azurewebsites.net/plants/${paramName}`)
+      fetch(`https://plantdb.azurewebsites.net/plants/${paramName}/illness`)
         .then(res => res.json())
         .then(data => {
           setIllnesses(data.illnesses)
@@ -31,9 +31,18 @@ export default function IllnessesPage() {
                 </thead>
                 <tbody>
                     {illnesses.map(ill => (
-                        <tr key={`illness-${ill.illnessNumber}`}>
-                            <td>{ill.description}</td>
-                        </tr>
+											<tr>
+												<td>
+													{ill.illnessNumber}
+												</td>
+												<td>
+													{ill.name}
+												</td>
+												<td>
+													{ill.description}
+												</td>
+
+											</tr>
                     ))}
                 </tbody>
             </table>
