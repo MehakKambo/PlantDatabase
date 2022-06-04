@@ -1,7 +1,28 @@
 import { useEffect, useState } from "react";
 import "../styles/Modal.css";
 
-export default function PlantAddForm({ setTrigger }) {
+export const FormMode = {
+    None: 0,
+    Add: 1,
+    Modify: 2,
+};
+
+const formTitle = new Map([
+    [FormMode.Add, "Add new plant"],
+    [FormMode.Modify, "Modify plant"],
+]);
+
+const formSuccess = new Map([
+    [FormMode.Add, "Plant added!"],
+    [FormMode.Modify, "Plant updated!"],
+]);
+
+const submitMethod = new Map([
+    [FormMode.Add, "POST"],
+    [FormMode.Modify, "PUT"],
+]);
+
+export function PlantUpdateForm({ closeModal, operation, initialPlant }) {
     // Regions fetched from the server
     const [regions, setRegions] = useState([{
         abbr: "",
@@ -9,10 +30,13 @@ export default function PlantAddForm({ setTrigger }) {
     }]);
     const [regionsFetched, setRegionsFetched] = useState(false);
 
+    // Modal title
+    const title = formTitle.get(operation);
+
     // Form fields
-    const [scientificName, setScientificName] = useState("");
-    const [commonName, setCommonName] = useState("");
-    const [region, setRegion] = useState("");
+    const [scientificName, setScientificName] = useState(initialPlant?.scientificName || "");
+    const [commonName, setCommonName] = useState(initialPlant?.commonName || "");
+    const [region, setRegion] = useState(initialPlant?.region || "");
 
     // Form state
     const [submitting, setSubmitting] = useState(false);
@@ -56,11 +80,11 @@ export default function PlantAddForm({ setTrigger }) {
                 const res = await fetch(
                     `https://plantdb.azurewebsites.net/plants/${scientificName},${commonName},${region}/main`,
                     {
-                        method: "POST",
+                        method: submitMethod.get(operation),
                     });
 
                 if (res.ok) {
-                    setResultMessage("Plant added! Refreshing...");
+                    setResultMessage(`${formSuccess.get(operation)} Refreshing...`);
                     setShouldRefresh(true);
                 } else {
                     setDidSubmitError(true);
@@ -109,7 +133,7 @@ export default function PlantAddForm({ setTrigger }) {
         <div className="modal">
 			<div className="modal-content">
 				<div className="modal-header">
-					<h4 className="modal-title">Add new plant</h4>
+					<h4 className="modal-title">{title}</h4>
 				</div>
 				<div className="modal-body">
                     <form onSubmit={submit}>
@@ -137,7 +161,7 @@ export default function PlantAddForm({ setTrigger }) {
                     <span style={{ color: didSubmitError ? "red" : undefined }}>{resultMessage}</span>
 				</div>
 				<div className="modal-footer">
-					<button className="button" onClick={() => setTrigger(false)}>Close</button>
+					<button className="button" onClick={closeModal}>Close</button>
 				</div>
 			</div>
 		</div>

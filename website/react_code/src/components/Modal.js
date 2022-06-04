@@ -29,6 +29,9 @@ function Modal(props) {
 					<p>
 						<Link to="/symptoms" className='btn btn-primary'>Symptoms</Link>
 					</p>
+					<div style={{ textAlign: "right" }}>
+						<button onClick={() => props.openModifyForm(plantInfo)}>Edit</button>
+					</div>
 				</div>
 				<div className='modal-footer'>
 					<button className='button' onClick={() => props.setTrigger(false)}>Close</button>

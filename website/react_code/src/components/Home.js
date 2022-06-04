@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/Home.css"
 import Modal from "./Modal";
 import ApiFetchData from "./ApiFetchData";
-import PlantAddForm from "./PlantAddForm";
+import { FormMode, PlantUpdateForm } from "./PlantUpdateForm";
 
 export function Component(props) {
   return <div> {props.data} {props.whatever} </div>
@@ -12,7 +12,8 @@ export default function Home() {
   const [modalButton, setShowModal] = useState(false);
   const [modalPlant, setModelPlant] = useState(null);
 
-  const [addFormOpen, setAddFormOpen] = useState(false);
+  const [updateFormMode, setUpdateFormMode] = useState(FormMode.None);
+  const [updateFormInitialPlant, setUpdateFormInitialPlant] = useState(null);
 
   const [plantInfo, setPlantInfo] = useState([]);
 
@@ -31,11 +32,17 @@ export default function Home() {
         <ApiFetchData />
       </div>
 
-    <Modal trigger={modalButton} setTrigger={setShowModal} scientificName={modalPlant}></Modal>
-    {addFormOpen && <PlantAddForm setTrigger={setAddFormOpen} />}
+    <Modal trigger={modalButton} setTrigger={setShowModal} scientificName={modalPlant} openModifyForm={(plantInfo) => {
+      setUpdateFormInitialPlant(plantInfo);
+      setUpdateFormMode(FormMode.Modify);
+    }}></Modal>
+    {updateFormMode !== FormMode.None && <PlantUpdateForm operation={updateFormMode} initialPlant={updateFormInitialPlant} closeModal={() => {
+      setUpdateFormInitialPlant(null);
+      setUpdateFormMode(FormMode.None);
+    }} />}
 
     <div>
-      <button onClick={() => setAddFormOpen(true)}>Add plant</button>
+      <button onClick={() => setUpdateFormMode(FormMode.Add)}>Add plant</button>
     </div>
 
     <div className="plantTable"> 
