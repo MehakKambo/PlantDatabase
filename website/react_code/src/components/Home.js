@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/Home.css"
 import Modal from "./Modal";
 import ApiFetchData from "./ApiFetchData";
+import PlantAddForm from "./PlantAddForm";
 
 export function Component(props) {
   return <div> {props.data} {props.whatever} </div>
@@ -10,6 +11,8 @@ export function Component(props) {
 export default function Home() {
   const [modalButton, setShowModal] = useState(false);
   const [modalPlant, setModelPlant] = useState(null);
+
+  const [addFormOpen, setAddFormOpen] = useState(false);
 
   const [plantInfo, setPlantInfo] = useState([]);
 
@@ -29,6 +32,12 @@ export default function Home() {
       </div>
 
     <Modal trigger={modalButton} setTrigger={setShowModal} scientificName={modalPlant}></Modal>
+    {addFormOpen && <PlantAddForm setTrigger={setAddFormOpen} />}
+
+    <div>
+      <button onClick={() => setAddFormOpen(true)}>Add plant</button>
+    </div>
+
     <div className="plantTable"> 
       <table>
         <thead>
