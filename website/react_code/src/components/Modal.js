@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import "../styles/Modal.css";
 
 function Modal(props) {
 	const [plantInfo, setPlantInfo] = useState([]);
+	const { paramName } = useParams();
+
+	
 
 	useEffect(() => {
 		if (props.scientificName != null) {
@@ -21,7 +24,7 @@ function Modal(props) {
 				</div>
 				<div className='modal-body'>Scientific Name: {plantInfo.scientificName}
 					<p>
-						<Link to="props.scientificName/illnesses" className='btn btn-primary'>Illnesses</Link>
+						<Link to={`/${plantInfo.scientificName}/illnesses`} className='btn btn-primary'>Illnesses</Link>
 					</p>
 					<p>
 						<Link to="/symptoms" className='btn btn-primary'>Symptoms</Link>
