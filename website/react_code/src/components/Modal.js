@@ -21,7 +21,7 @@ function Modal(props) {
 				</div>
 				<div className='modal-body'>Scientific Name: {plantInfo.scientificName}
 					<p>
-						<Link to="/illnesses" className='btn btn-primary'>Illnesses</Link>
+						<Link to="props.scientificName/illnesses" className='btn btn-primary'>Illnesses</Link>
 					</p>
 					<p>
 						<Link to="/symptoms" className='btn btn-primary'>Symptoms</Link>

@@ -3,7 +3,6 @@ import "../styles/Home.css"
 import Modal from "./Modal";
 import ApiFetchData from "./ApiFetchData";
 
-
 export function Component(props) {
   return <div> {props.data} {props.whatever} </div>
 }
@@ -26,6 +25,7 @@ export default function Home() {
     <div className="home">
       <div className="headerContainer">
         <h1> Plant Database </h1>
+        <ApiFetchData />
       </div>
 
     <Modal trigger={modalButton} setTrigger={setShowModal} scientificName={modalPlant}></Modal>

@@ -12,7 +12,7 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/illnesses" element={<IllnessesPage />} />
+        <Route path="/:paramName/illnesses/" element={<IllnessesPage />} />
         <Route path="/symptoms" element={<SymptomPage />} />
       </Routes>
     </Router>
