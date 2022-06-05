@@ -8,7 +8,7 @@ export default class ApiFetchData extends React.Component {
     }
 
     async componentDidMount(){
-        const url = "https://plantdb.azurewebsites.net/plants/Camellia sinensis sinensis";
+        const url = "https://plantdb.azurewebsites.net/plants/Acer macrophyllum";
         const response = await fetch(url);
         const data = await response.json();
         console.log(data);
