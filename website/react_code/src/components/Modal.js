@@ -24,6 +24,15 @@ function Modal(props) {
 				</div>
 				<div className='modal-body'>Scientific Name: {plantInfo.scientificName}
 					<p>
+						Region(s): {plantInfo.regionName} ({plantInfo.regionAbbr})
+					</p>
+					<p>
+						Climate(s): {plantInfo.climates != null ? plantInfo.climates.reduce((agg, next) => `${agg} ${next}`, "") : "" }
+					</p>
+					<p>
+						Past Research: {plantInfo.research != null ? plantInfo.research.reduce((agg, next) => `${agg} ${next}`, "") : "" }
+					</p>
+					<p>
 						<Link to={`/${plantInfo.scientificName}/illnesses`} className='btn btn-primary'>Illnesses</Link>
 					</p>
 					<p>
@@ -39,3 +48,4 @@ function Modal(props) {
 }
 
 export default Modal;
+

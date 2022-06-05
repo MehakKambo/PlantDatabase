@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 function SymptomIllnesses({ symptomNumber }) {
     const [illnesses, setIllnesses] = useState(null);
@@ -42,30 +43,15 @@ function SymptomIllnesses({ symptomNumber }) {
 export default function SymptomPage() {
     const [symptoms, setSymptoms] = useState(null);
     const [selectedSymptom, setSelectedSymptom] = useState('');
+    const { scientificName, illnessName} = useParams();
 
     useEffect(() => {
-        // This will eventually do an actual request to the API
-        new Promise((resolve) => setTimeout(resolve, 600))
-            .then(() => {
-                setSymptoms([
-                    {
-                        symptomNumber: 'cc8d39c6-c00b-4bca-b179-2f25e13e36d1',
-                        name: 'Some symptom 1',
-                        description: 'Some description',
-                    },
-                    {
-                        symptomNumber: '2a75000c-ef48-4471-a760-5c26fce716cd',
-                        name: 'Some symptom 2',
-                        description: 'Some description',
-                    },
-                    {
-                        symptomNumber: 'ae459662-5a19-41a5-8b5a-10e32182841e',
-                        name: 'Some symptom 3',
-                        description: 'Some description',
-                    },
-                ]);
-            });
-    }, []);
+        fetch(`https://plantdb.azurewebsites.net/plants/${scientificName}/ilness/${illnessName}/symptoms`)
+        .then(res => res.json())
+        .then(data => {
+            setSymptoms(data.symptoms)
+        })
+    }, [])
 
     if (symptoms == null) {
         return <div>Loading...</div>
