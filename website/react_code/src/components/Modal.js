@@ -33,7 +33,7 @@ function Modal(props) {
 						Past Research: {plantInfo.research != null ? plantInfo.research.reduce((agg, next) => `${agg} ${next}`, "") : "" }
 					</p>
 					<p>
-						<Link to={`/${plantInfo.scientificName}/illness/`} className='btn btn-primary'>Illnesses</Link>
+						<Link to={`/PlantDatabase/${plantInfo.scientificName}/illness/`} className='btn btn-primary'>Illnesses</Link>
 					</p>
 					<div style={{ textAlign: "right" }}>
 						<button onClick={() => props.openModifyForm(plantInfo)}>Edit</button>

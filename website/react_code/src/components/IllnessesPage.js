@@ -37,7 +37,7 @@ export default function IllnessesPage() {
 													{ill.description}
 												</td>
 												<td>
-													<Link to={`/${paramName}/illness/${ill.name}/symptom`} className='btn btn-primary'>Symptom</Link>
+													<Link to={`/PlantDatabase/${paramName}/illness/${ill.name}/symptom`} className='btn btn-primary'>Symptom</Link>
 												</td>
 											</tr>
                     ))}
