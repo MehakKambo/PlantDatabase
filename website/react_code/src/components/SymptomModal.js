@@ -5,6 +5,7 @@ import { Link, useParams } from 'react-router-dom';
 
 export default function SymptomModal(props){
     const [symptomInfo, setSymptomInfo] = useState(null);
+		const [handlingInfo, setHandlingInfo] = useState(null);
 
     useEffect(() => {
         if ((props.scientificName || props.name) != null) {
@@ -16,10 +17,26 @@ export default function SymptomModal(props){
         }
     }, [props.scientificName, props.name])
 
-		if (!props.open) return null;
-		if ((symptomInfo) == null) {
-			return <div>Loading...</div>
-		}
+
+		useEffect(() => {
+			if ((props.name) != null) {
+					fetch(`https://plantdb.azurewebsites.net/plants/${props.scientificName}/illness/${props.name}/handlingprotocol`)
+					.then(res => res.json())
+					.then(data => {
+						setHandlingInfo(data)
+					})
+			}
+	}, [props.scientificName, props.name])
+
+
+	if (!props.open) return null;
+	if ((symptomInfo) == null) {
+		return <div>Loading...</div>
+	}
+
+	if ((handlingInfo) == null) {
+		return <div>Loading Handling Info...</div>
+	}
 
     return (
         <div>
@@ -29,11 +46,12 @@ export default function SymptomModal(props){
 								<br></br>
 								Description: {sym.description}
 								{"\n"}
+								Handling Protocol: {handlingInfo.handlingProtocol.info}
 							</li>
 						))} </p>
-						{/* <div>
-							<button></button>
-						</div> */}
+						<p>
+							
+						</p>
 				</div>
     );
 	}
