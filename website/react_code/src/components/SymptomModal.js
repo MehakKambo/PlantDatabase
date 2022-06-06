@@ -45,8 +45,8 @@ export default function SymptomModal(props){
 								Symptom Name: {sym.name}
 								<br></br>
 								Description: {sym.description}
-								{"\n"}
-								Handling Protocol: {handlingInfo.handlingProtocol.info}
+								<p>Handling Protocol: {handlingInfo.handlingProtocol.info}</p>
+								
 							</li>
 						))} </p>
 						<p>
