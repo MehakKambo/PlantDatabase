@@ -4,7 +4,6 @@ import "../styles/Modal.css";
 
 function Modal(props) {
 	const [plantInfo, setPlantInfo] = useState([]);
-	const { paramName } = useParams();
 
 	
 

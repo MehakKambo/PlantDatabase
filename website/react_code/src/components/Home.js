@@ -4,6 +4,7 @@ import Modal from "./Modal";
 import ApiFetchData from "./ApiFetchData";
 import { FormMode, PlantUpdateForm } from "./PlantUpdateForm";
 
+
 export function Component(props) {
   return <div> {props.data} {props.whatever} </div>
 }

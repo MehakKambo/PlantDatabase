@@ -1,10 +1,17 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
+import SymptomModal from './SymptomModal';
 
+export function Component(props) {
+	return <div> {props.data} {props.whatever} </div>
+}
 
 export default function IllnessesPage() {
   const { paramName } = useParams();  
 	const [illnesses, setIllnesses] = useState(null);
+	const [ symptomModalButton, setSymptomButton] = useState(false);
+	const [symptomModal, setSymptom] = useState(null);
+	
 
     useEffect(() => {
       fetch(`https://plantdb.azurewebsites.net/plants/${paramName}/illness`)
@@ -25,6 +32,7 @@ export default function IllnessesPage() {
                     <tr>
                         <th>Illness</th>
                         <th>Description</th>
+												<th>Symptoms</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -37,10 +45,17 @@ export default function IllnessesPage() {
 													{ill.description}
 												</td>
 												<td>
-													<Link to={`/${paramName}/illness/${ill.name}/symptom`} className='btn btn-primary'>Symptom</Link>
+													<button onClick={() => {
+														setSymptomButton(true);
+														setSymptom(ill.name);
+														}}>Symptoms</button>
+														<SymptomModal open={symptomModalButton} scientificName={paramName} name={symptomModal} />
 												</td>
+												
+												
 											</tr>
                     ))}
+										
                 </tbody>
             </table>
         </div>
