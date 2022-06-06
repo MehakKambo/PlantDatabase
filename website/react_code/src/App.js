@@ -11,9 +11,9 @@ function App() {
     <Router>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/:paramName/illness" element={<IllnessesPage />} />
-        <Route path="/:scientificName/illness/:illnessName/symptoms" element={<IllnessesPage />} />
+        <Route path="/PlantDatabase" element={<Home />} />
+        <Route path="/PlantDatabase/:paramName/illness" element={<IllnessesPage />} />
+        <Route path="/PlantDatabase/:scientificName/illness/:illnessName/symptoms" element={<IllnessesPage />} />
       </Routes>
     </Router>
   );
