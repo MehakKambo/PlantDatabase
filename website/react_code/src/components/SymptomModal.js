@@ -25,7 +25,10 @@ export default function SymptomModal(props){
         <div>
 					<p>{symptomInfo.map(sym => (
 							<li key={sym.symptomNumber}>
-								{sym.name}
+								Symptom Name: {sym.name}
+								<br></br>
+								Description: {sym.description}
+								{"\n"}
 							</li>
 						))} </p>
 						{/* <div>

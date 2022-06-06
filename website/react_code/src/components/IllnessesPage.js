@@ -45,11 +45,11 @@ export default function IllnessesPage() {
 													{ill.description}
 												</td>
 												<td>
-													<button onClick={() => {
+														<button onClick={() => {
 														setSymptomButton(true);
 														setSymptom(ill.name);
 														}}>Symptoms</button>
-														<SymptomModal open={symptomModalButton} scientificName={paramName} name={symptomModal} />
+														<SymptomModal open={symptomModal === ill.name} scientificName={paramName} name={symptomModal} />
 												</td>
 												
 												
