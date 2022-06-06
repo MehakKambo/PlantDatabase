@@ -10,8 +10,8 @@ function Navbar() {
         <img src={Logo} />
       </div>
       <div className="rightSide">
-        <Link to="/"> Home </Link>
-        <Link to="/symptoms"> Symptoms </Link>
+        <Link to="/PlantDatabase"> Home </Link>
+        <Link to="/PlantDatabase/symptoms"> Symptoms </Link>
       </div>
     </div>
   );
