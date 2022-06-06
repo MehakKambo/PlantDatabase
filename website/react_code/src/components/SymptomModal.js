@@ -25,6 +25,12 @@ export default function SymptomModal(props){
 					.then(data => {
 						setHandlingInfo(data)
 					})
+					.catch(() => setHandlingInfo({
+						handlingProtocol: {
+							info: "(No handling protocols)",
+							protocolNumber: "",
+						},
+					}))
 			}
 	}, [props.scientificName, props.name])
 
@@ -36,6 +42,10 @@ export default function SymptomModal(props){
 
 	if ((handlingInfo) == null) {
 		return <div>Loading Handling Info...</div>
+	}
+
+	if (symptomInfo.length === 0) {
+		return <div>(No symptoms)</div>
 	}
 
     return (
