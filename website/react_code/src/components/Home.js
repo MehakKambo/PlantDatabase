@@ -24,7 +24,23 @@ export default function Home() {
       .then(data => {
         setPlantInfo(data.plants)
       })
-  }, [])
+  }, []);
+
+  const [regions, setRegions] = useState([{
+    abbr: "",
+    name: "Loading...",
+  }]);
+  const [regionsFetched, setRegionsFetched] = useState(false);
+  const [region, setRegion] = useState("All Regions");
+
+  useEffect(() => {
+    fetch("https://plantdb.azurewebsites.net/regions")
+      .then((res) => res.json())
+      .then((res) => {
+        setRegions(res.regions);
+        setRegionsFetched(true);
+      });
+}, []);
 
   return (
     <div className="home">
@@ -46,6 +62,16 @@ export default function Home() {
       <button onClick={() => setUpdateFormMode(FormMode.Add)}>Add plant</button>
     </div>
 
+    <div>
+      <span>Region:&nbsp;</span>
+      <select disabled={!regionsFetched} value={region} onChange={(e) => setRegion(e.target.value)}>
+        <option value="All Regions">All Regions</option>
+        {regions.map(r => (
+            <option key={r.name} value={r.name}>{r.name}</option>
+        ))}
+      </select>
+    </div>
+
     <div className="plantTable"> 
       <table>
         <thead>
@@ -55,19 +81,22 @@ export default function Home() {
           </tr>
         </thead>
         <tbody>
-          {plantInfo.map(pi => (
-            <tr key={pi.scientificName}>
-              <td>
-                <button onClick={() => {
-                  setModelPlant(pi.scientificName);
-                  setShowModal(true);
-                }}>{pi.commonName}</button>
-              </td>
-              <td>
-                {pi.region}
-              </td>
-            </tr>
-          ))}
+          {plantInfo
+            .filter(pi => region === "All Regions" || pi.region === region)
+            .map(pi => (
+              <tr key={pi.scientificName}>
+                <td>
+                  <button onClick={() => {
+                    setModelPlant(pi.scientificName);
+                    setShowModal(true);
+                  }}>{pi.commonName}</button>
+                </td>
+                <td>
+                  {pi.region}
+                </td>
+              </tr>
+            ))
+          }
         </tbody>
       </table>
     </div>
