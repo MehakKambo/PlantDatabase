@@ -30,7 +30,7 @@ export default function Home() {
     <div className="home">
       <div className="headerContainer">
         <h1> Plant Database </h1>
-        <ApiFetchData />
+        
       </div>
 
     <Modal trigger={modalButton} setTrigger={setShowModal} scientificName={modalPlant} openModifyForm={(plantInfo) => {

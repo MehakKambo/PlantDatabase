@@ -11,7 +11,6 @@ function Navbar() {
       </div>
       <div className="rightSide">
         <Link to="/PlantDatabase"> Home </Link>
-        <Link to="/PlantDatabase/symptoms"> Symptoms </Link>
       </div>
     </div>
   );
