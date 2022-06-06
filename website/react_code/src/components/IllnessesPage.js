@@ -1,12 +1,10 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+
 export default function IllnessesPage() {
   const { paramName } = useParams();  
 	const [illnesses, setIllnesses] = useState(null);
-
-
-
 
     useEffect(() => {
       fetch(`https://plantdb.azurewebsites.net/plants/${paramName}/illness`)
@@ -39,12 +37,8 @@ export default function IllnessesPage() {
 													{ill.description}
 												</td>
 												<td>
-													<button>
-														Symptoms
-													</button>
+													<Link to={`/${paramName}/illness/${ill.name}/symptom`} className='btn btn-primary'>Symptom</Link>
 												</td>
-
-
 											</tr>
                     ))}
                 </tbody>

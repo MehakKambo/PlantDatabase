@@ -13,7 +13,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/:paramName/illness" element={<IllnessesPage />} />
-        <Route path="/:scientificName/illness/:illnessName/symptoms" element={<SymptomPage />} />
+        <Route path="/:scientificName/illness/:illnessName/symptoms" element={<IllnessesPage />} />
       </Routes>
     </Router>
   );

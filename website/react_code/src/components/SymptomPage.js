@@ -40,7 +40,7 @@ function SymptomIllnesses({ symptomNumber }) {
     );
 }
 
-export default function SymptomPage() {
+export function SymptomPage() {
     const [symptoms, setSymptoms] = useState(null);
     const [selectedSymptom, setSelectedSymptom] = useState('');
     const { scientificName, illnessName} = useParams();
