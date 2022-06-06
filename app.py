@@ -147,8 +147,8 @@ def plant_symptoms(scientific_name_raw: str, illness_name_raw: str):
                             '    ON (ISymp.IllnessID = PI.ID) '
                             'JOIN Plant P ' 
 	                        '    ON (P.ID = PI.plantID) '
-                           'WHERE PI.name = %s AND P.scientificName = %s;', 
-                           (illness_name, scientific_name))
+                           'WHERE PI.name = %s;', 
+                           (illness_name))
             symptoms = [dict(zip(response_keys, condition)) for condition in cursor.fetchall()]
     conn.close()
     return {
@@ -176,8 +176,8 @@ def plant_illness_symptoms(scientific_name_raw: str, illness_name_raw: str):
 	                        '   ON PI.ID = HP.ID '
                             'JOIN Plant P '
                             '   ON P.ID = PI.PlantID '
-                            'WHERE PI.name = %s AND P.scientificName = %s;', 
-                            (plantIllness_name, scientific_name))
+                            'WHERE PI.name = %s;', 
+                            (plantIllness_name))
             handProtocol_row = cursor.fetchone()
             if handProtocol_row is None:
                 abort(404)
