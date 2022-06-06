@@ -59,9 +59,7 @@ export default function SymptomModal(props){
 								
 							</li>
 						))} </p>
-						<p>
-							
-						</p>
+						
 				</div>
     );
 	}

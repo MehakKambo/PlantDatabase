@@ -45,9 +45,9 @@ export default function IllnessesPage() {
 													{ill.description}
 												</td>
 												<td>
-														<button onClick={() => {
+													<button onClick={() => {
 														setSymptomButton(true);
-														setSymptom(ill.name);
+														setSymptom(symptomModal != null ? null : ill.name);
 														}}>Symptoms</button>
 														<SymptomModal open={symptomModal === ill.name} scientificName={paramName} name={symptomModal} />
 												</td>
